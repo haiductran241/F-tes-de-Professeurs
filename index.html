@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bonne Fête des Professeurs - 20/11</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      /* --- CẤU HÌNH MÀU SẮC (CỜ PHÁP) --- */
+      :root {
+        --fr-blue: #002395;
+        --fr-red: #ed2939;
+        --fr-white: #ffffff;
+      }
+
+      /* Animation */
+      .fade-in {
+        animation: fadeIn 0.5s ease-out;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .hidden-section {
+        display: none;
+      }
+
+      /* Avatar Frame */
+      .avatar-frame {
+        border: 4px solid white;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        outline: 2px dashed var(--fr-red);
+        outline-offset: 4px;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50 font-sans min-h-screen flex flex-col text-slate-800">
+    <nav
+      class="bg-[#002395] text-white shadow-lg sticky top-0 z-50 border-b-4 border-[#ED2939]"
+    >
+      <div class="container mx-auto px-4">
+        <div class="flex flex-wrap justify-between items-center py-3">
+          <div
+            class="text-xl md:text-2xl font-bold flex items-center gap-2 uppercase tracking-widest cursor-pointer"
+            onclick="showHome()"
+          >
+            🇫🇷 20/11
+          </div>
+
+          <div class="flex items-center gap-4">
+            <button
+              onclick="showHome()"
+              class="text-sm md:text-base font-bold hover:text-[#ED2939] transition"
+            >
+              Accueil
+            </button>
+
+            <div class="relative group">
+              <button
+                class="flex items-center gap-1 text-sm md:text-base font-bold bg-white/10 px-3 py-2 rounded hover:bg-white/20 transition"
+              >
+                À Professeur ▼
+              </button>
+              <div
+                class="absolute right-0 top-full mt-1 hidden group-hover:block w-[300px] bg-white text-slate-800 shadow-2xl rounded-lg overflow-hidden border-t-4 border-[#ED2939]"
+              >
+                <div
+                  id="teacher-dropdown-list"
+                  class="max-h-[60vh] overflow-y-auto"
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main
+      class="container mx-auto p-4 md:p-8 flex-grow flex flex-col justify-center"
+    >
+      <div id="page-home" class="fade-in w-full max-w-4xl mx-auto">
+        <div
+          class="bg-white rounded-xl shadow-2xl p-8 md:p-16 border-double border-8 border-[#002395] text-center relative overflow-hidden"
+        >
+          <div class="absolute top-0 left-0 w-full h-2 bg-[#002395]"></div>
+          <div class="absolute bottom-0 left-0 w-full h-2 bg-[#ED2939]"></div>
+
+          <h1
+            class="text-3xl md:text-5xl font-bold text-[#002395] mb-6 font-serif"
+          >
+            Bonne Fête des Professeurs !
+          </h1>
+          <div class="w-24 h-1 bg-[#ED2939] mx-auto mb-8"></div>
+
+          <div
+            class="text-lg md:text-2xl text-slate-600 italic mb-8 leading-relaxed font-serif px-4 md:px-10"
+          >
+            "Un grand merci pour votre patience, votre passion et tout ce que
+            vous nous avez appris. Nous vous souhaitons beaucoup de bonheur, de
+            santé et de réussite."
+            <br /><br />
+            <span class="text-sm text-gray-400 not-italic"
+              >(De Classe 4A P22 )</span
+            >
+          </div>
+
+          <button
+            class="mt-4 text-white bg-[#ED2939] px-6 py-2 rounded-full font-bold shadow hover:bg-red-700 transition animate-bounce"
+          >
+            👇 Choisissez un nom dans le menu
+          </button>
+        </div>
+      </div>
+
+      <div
+        id="page-teacher"
+        class="hidden-section fade-in w-full max-w-4xl mx-auto"
+      >
+        <div
+          class="bg-white rounded-xl shadow-2xl p-6 md:p-8 border-t-4 border-[#ED2939] relative"
+        >
+          <div class="flex flex-col items-center mb-8 -mt-16">
+            <img
+              id="t-avatar-img"
+              src=""
+              alt="Avatar"
+              class="w-32 h-32 rounded-full object-cover avatar-frame bg-gray-200 mb-4"
+            />
+
+            <h2
+              id="t-name"
+              class="text-2xl md:text-3xl font-bold text-[#002395] text-center"
+            >
+              Tên Giáo Viên
+            </h2>
+            <p class="text-[#ED2939] font-medium"></p>
+          </div>
+
+          <div
+            class="relative bg-slate-900 rounded-xl overflow-hidden shadow-inner h-[350px] md:h-[400px]"
+          >
+            <div
+              id="carousel-track"
+              class="flex transition-transform duration-500 ease-in-out h-full"
+            ></div>
+
+            <button
+              onclick="moveSlide(-1)"
+              class="absolute top-1/2 left-4 -translate-y-1/2 bg-white/20 hover:bg-[#ED2939] text-white w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-sm transition z-10"
+            >
+              ❮
+            </button>
+            <button
+              onclick="moveSlide(1)"
+              class="absolute top-1/2 right-4 -translate-y-1/2 bg-white/20 hover:bg-[#ED2939] text-white w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-sm transition z-10"
+            >
+              ❯
+            </button>
+
+            <div
+              id="carousel-counter"
+              class="absolute bottom-4 right-4 text-white/50 text-sm font-mono z-10"
+            >
+              0/0
+            </div>
+          </div>
+
+          <div
+            id="no-wish-msg"
+            class="hidden text-center py-10 text-gray-400 italic"
+          >
+            Aucun message pour le moment. (Chưa có lời chúc nào).
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="bg-[#002395] text-white/70 text-center py-4 mt-8 text-sm">
+      <p>© 2025 - Classe 4A P22 | 🇻🇳 🇫🇷</p>
+    </footer>
+
+    <script>
+      // ============================================================
+      // 1. CẤU HÌNH (ĐÃ TÍCH HỢP LINK CỦA BẠN)
+      // ============================================================
+
+      // 👇 LINK CỦA BẠN ĐÃ ĐƯỢC DÁN Ở ĐÂY
+      const GOOGLE_SHEET_URL =
+        "https://docs.google.com/spreadsheets/d/e/2PACX-1vT7LbhVIy0HldH_j1D4IJwSjR4wrH5p7xjNG1GmzJSzB8beTwAonHtbD4z0Zfgb6JBngVy6ffebwPQe/pub?gid=166008584&single=true&output=csv";
+
+      // 👇 DANH SÁCH GIÁO VIÊN (Key viết thường để dễ khớp)
+      const TEACHERS_DB = [
+        { key: "ánh ngọc", name: "Mme. Võ Thị Ánh Ngọc", img: "" },
+        { key: "bạch quỳnh chi", name: "Mme. Nguyễn Bạch Quỳnh Chi", img: "" },
+        {
+          key: "trúc quỳnh",
+          name: "Mme. Trần Thụy Trúc Quỳnh",
+          img: "../img/MmeQuynh.jpg",
+        },
+        { key: "ngọc báu", name: "Mme. Lê Ngọc Báu", img: "../img/MmeBau.jpg" },
+        { key: "linh chi", name: "Mme. Đoàn Mỹ Linh Chi", img: "" }, // Key: linh chi
+        { key: "chi bé", name: "Mme. Đoàn Mỹ Linh Chi (Chi Bé)", img: "" }, // Dự phòng nếu form chọn Chi Bé
+        {
+          key: "hồng phước",
+          name: "M. Lê Hồng Phước",
+          img: "../img/MPhuoc.jpg",
+        },
+        { key: "nhật duy", name: "M. Trần Nhật Duy", img: "../img/MDuy.jpg" },
+        {
+          key: "văn quang",
+          name: "M. Phạm Văn Quang",
+          img: "../img/MQuang.jpg",
+        },
+        { key: "minh huy", name: "M. Nguyễn Minh Huy", img: "" },
+        { key: "văn lợi", name: "M. Nguyễn Văn Lợi", img: "../img/MLoi.jpg" },
+        { key: "thanh hoài", name: "M. Diệp Thanh Hoài", img: "" },
+        { key: "văn hoàng", name: "M. Nguyễn Văn Hoàng", img: "" },
+      ];
+
+      let allWishesData = [];
+      let currentSlide = 0;
+      let totalSlides = 0;
+
+      // ============================================================
+      // 2. HÀM XỬ LÝ CSV (QUAN TRỌNG)
+      // ============================================================
+      function parseCSV(text) {
+        const rows = [];
+        let currentRow = [];
+        let currentVal = "";
+        let insideQuotes = false;
+        for (let i = 0; i < text.length; i++) {
+          const char = text[i];
+          const nextChar = text[i + 1];
+          if (char === '"') {
+            if (insideQuotes && nextChar === '"') {
+              currentVal += '"';
+              i++;
+            } else {
+              insideQuotes = !insideQuotes;
+            }
+          } else if (char === "," && !insideQuotes) {
+            currentRow.push(currentVal);
+            currentVal = "";
+          } else if ((char === "\n" || char === "\r") && !insideQuotes) {
+            if (char === "\r" && nextChar === "\n") i++;
+            if (currentRow.length > 0 || currentVal) {
+              currentRow.push(currentVal);
+              rows.push(currentRow);
+            }
+            currentRow = [];
+            currentVal = "";
+          } else {
+            currentVal += char;
+          }
+        }
+        if (currentVal || currentRow.length > 0) {
+          currentRow.push(currentVal);
+          rows.push(currentRow);
+        }
+        return rows;
+      }
+
+      // ============================================================
+      // 3. TẢI DỮ LIỆU TỪ SHEET
+      // ============================================================
+      async function loadWishes() {
+        try {
+          console.log("🚀 Đang tải dữ liệu...");
+          const response = await fetch(GOOGLE_SHEET_URL);
+          const data = await response.text();
+          const rows = parseCSV(data).slice(1); // Bỏ dòng tiêu đề
+
+          allWishesData = rows
+            .map((cols) => ({
+              name: cols[1]?.trim() || "Anonyme", // Cột B: Tên
+              teachers: cols[2]?.trim() || "", // Cột C: Giáo viên
+              message: cols[3]?.trim() || "", // Cột D: Lời chúc
+            }))
+            .filter((w) => w.message !== "" && w.teachers !== "");
+
+          console.log(`✅ Đã tải thành công ${allWishesData.length} lời chúc.`);
+        } catch (error) {
+          console.error("Lỗi tải data:", error);
+        }
+      }
+
+      // ============================================================
+      // 4. LOGIC HIỂN THỊ GIAO DIỆN
+      // ============================================================
+      function initDropdown() {
+        const listContainer = document.getElementById("teacher-dropdown-list");
+        let html = "";
+        TEACHERS_DB.forEach((t) => {
+          html += `
+                    <button onclick="selectTeacher('${t.key}')" class="block w-full text-left px-5 py-3 hover:bg-red-50 hover:text-[#ED2939] border-b border-gray-100 transition text-sm md:text-base">
+                        <span class="font-bold block">${t.name}</span>
+                    </button>
+                `;
+        });
+        listContainer.innerHTML = html;
+      }
+
+      function showHome() {
+        document.getElementById("page-home").classList.remove("hidden-section");
+        document.getElementById("page-teacher").classList.add("hidden-section");
+      }
+
+      function selectTeacher(key) {
+        document.getElementById("page-home").classList.add("hidden-section");
+        const pageTeacher = document.getElementById("page-teacher");
+        pageTeacher.classList.remove("hidden-section");
+
+        pageTeacher.classList.remove("fade-in");
+        void pageTeacher.offsetWidth;
+        pageTeacher.classList.add("fade-in");
+
+        const teacherInfo = TEACHERS_DB.find((t) => t.key === key);
+        if (!teacherInfo) return;
+
+        document.getElementById("t-name").innerText = teacherInfo.name;
+
+        // Xử lý Avatar
+        const avatarImg = document.getElementById("t-avatar-img");
+        if (teacherInfo.img && teacherInfo.img.trim() !== "") {
+          avatarImg.src = teacherInfo.img;
+        } else {
+          // Avatar tạo tự động từ tên
+          const encodedName = encodeURIComponent(teacherInfo.name);
+          avatarImg.src = `https://ui-avatars.com/api/?name=${encodedName}&background=random&size=150&font-size=0.33&color=fff&background=002395`;
+        }
+
+        renderCarousel(key);
+      }
+
+      function renderCarousel(teacherKey) {
+        const track = document.getElementById("carousel-track");
+        const noMsg = document.getElementById("no-wish-msg");
+        const counter = document.getElementById("carousel-counter");
+
+        // Tìm kiếm thông minh (chữ thường)
+        const normalizedKey = teacherKey.toLowerCase();
+
+        const filteredWishes = allWishesData.filter((w) =>
+          w.teachers.toLowerCase().includes(normalizedKey)
+        );
+
+        track.innerHTML = "";
+        currentSlide = 0;
+        totalSlides = filteredWishes.length;
+
+        if (totalSlides === 0) {
+          track.parentElement.classList.add("hidden");
+          noMsg.classList.remove("hidden");
+        } else {
+          track.parentElement.classList.remove("hidden");
+          noMsg.classList.add("hidden");
+
+          let html = "";
+          filteredWishes.forEach((w) => {
+            html += `
+                        <div class="min-w-full h-full flex flex-col items-center justify-center p-8 md:p-16 text-center bg-gradient-to-b from-slate-800 to-slate-900 text-white border-r border-white/5">
+                            <div class="text-4xl mb-4 opacity-50">❝</div>
+                            <p class="text-lg md:text-2xl italic mb-6 leading-relaxed font-light">
+                                "${w.message}"
+                            </p>
+                            <div class="w-16 h-1 bg-[#ED2939] mb-4"></div>
+                            <p class="font-bold text-[#ED2939] uppercase tracking-widest text-sm">
+                                De: ${w.name}
+                            </p>
+                        </div>
+                    `;
+          });
+          track.innerHTML = html;
+        }
+        updateCarouselUI();
+      }
+
+      function moveSlide(direction) {
+        if (totalSlides <= 0) return;
+        currentSlide += direction;
+        if (currentSlide >= totalSlides) currentSlide = 0;
+        if (currentSlide < 0) currentSlide = totalSlides - 1;
+        updateCarouselUI();
+      }
+
+      function updateCarouselUI() {
+        const track = document.getElementById("carousel-track");
+        track.style.transform = `translateX(-${currentSlide * 100}%)`;
+        if (totalSlides > 0) {
+          document.getElementById("carousel-counter").innerText = `${
+            currentSlide + 1
+          }/${totalSlides}`;
+        }
+      }
+
+      // KHỞI CHẠY
+      document.addEventListener("DOMContentLoaded", () => {
+        initDropdown();
+        loadWishes();
+      });
+    </script>
+  </body>
+</html>
