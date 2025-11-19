@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" && lang="vn">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bonne Fête des Professeurs - 20/11</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
     <style>
       /* --- CẤU HÌNH MÀU SẮC (CỜ PHÁP) --- */
       :root {
@@ -38,9 +40,34 @@
         outline: 2px dashed var(--fr-red);
         outline-offset: 4px;
       }
+      /* --- THÊM ĐOẠN NÀY --- */
+      /* Hoa trang trí */
+      .decor-flower {
+        position: fixed;
+        bottom: 0;
+        z-index: -1;
+        opacity: 0.8;
+        pointer-events: none;
+        transition: transform 0.3s ease;
+      }
+      .decor-flower:hover {
+        transform: scale(1.05) rotate(5deg);
+        opacity: 1;
+      }
     </style>
   </head>
   <body class="bg-slate-50 font-sans min-h-screen flex flex-col text-slate-800">
+    <img
+      src="https://cdn-icons-png.flaticon.com/512/9103/9103293.png"
+      class="decor-flower left-0 w-32 md:w-64 -mb-4 -ml-4 -rotate-12 filter hue-rotate-15"
+      alt="Flower"
+    />
+
+    <img
+      src="https://cdn-icons-png.flaticon.com/512/9103/9103293.png"
+      class="decor-flower right-0 w-32 md:w-64 -mb-4 -mr-4 rotate-12 filter hue-rotate-340"
+      alt="Flower"
+    />
     <nav
       class="bg-[#002395] text-white shadow-lg sticky top-0 z-50 border-b-4 border-[#ED2939]"
     >
@@ -104,7 +131,7 @@
             "Un grand merci pour votre patience, votre passion et tout ce que
             vous nous avez appris. Nous vous souhaitons beaucoup de bonheur, de
             santé et de réussite."
-            <br /><br />
+            <br />
             <span class="text-sm text-gray-400 not-italic"
               >(De Classe 4A P22 )</span
             >
@@ -197,7 +224,11 @@
       // 👇 DANH SÁCH GIÁO VIÊN (Key viết thường để dễ khớp)
       const TEACHERS_DB = [
         { key: "ánh ngọc", name: "Mme. Võ Thị Ánh Ngọc", img: "" },
-        { key: "bạch quỳnh chi", name: "Mme. Nguyễn Bạch Quỳnh Chi", img: "" },
+        {
+          key: "bạch quỳnh chi",
+          name: "Mme. Nguyễn Bạch Quỳnh Chi",
+          img: "../img/MmeChiLon.jpg",
+        },
         {
           key: "trúc quỳnh",
           name: "Mme. Trần Thụy Trúc Quỳnh",
@@ -205,7 +236,6 @@
         },
         { key: "ngọc báu", name: "Mme. Lê Ngọc Báu", img: "../img/MmeBau.jpg" },
         { key: "linh chi", name: "Mme. Đoàn Mỹ Linh Chi", img: "" }, // Key: linh chi
-        { key: "chi bé", name: "Mme. Đoàn Mỹ Linh Chi (Chi Bé)", img: "" }, // Dự phòng nếu form chọn Chi Bé
         {
           key: "hồng phước",
           name: "M. Lê Hồng Phước",
@@ -226,6 +256,42 @@
       let allWishesData = [];
       let currentSlide = 0;
       let totalSlides = 0;
+      // --- THÊM HÀM NÀY ---
+      function shootFireworks() {
+        var duration = 10 * 1000;
+        var animationEnd = Date.now() + duration;
+        var defaults = {
+          startVelocity: 30,
+          spread: 360,
+          ticks: 60,
+          zIndex: 100,
+        };
+
+        function randomInRange(min, max) {
+          return Math.random() * (max - min) + min;
+        }
+
+        var interval = setInterval(function () {
+          var timeLeft = animationEnd - Date.now();
+          if (timeLeft <= 0) {
+            return clearInterval(interval);
+          }
+          var particleCount = 50 * (timeLeft / duration);
+          confetti(
+            Object.assign({}, defaults, {
+              particleCount,
+              origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+            })
+          );
+          confetti(
+            Object.assign({}, defaults, {
+              particleCount,
+              origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+            })
+          );
+        }, 250);
+      }
+      // --- HẾT ĐOẠN THÊM ---
 
       // ============================================================
       // 2. HÀM XỬ LÝ CSV (QUAN TRỌNG)
@@ -404,6 +470,7 @@
       document.addEventListener("DOMContentLoaded", () => {
         initDropdown();
         loadWishes();
+        shootFireworks();
       });
     </script>
   </body>
